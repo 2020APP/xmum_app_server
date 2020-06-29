@@ -4,6 +4,7 @@ $response = array();
 //Declare empty variables
 $con='';
 $fullName='';
+$role='';
 $passwordHashDB='';
 $salt='';
 
@@ -30,6 +31,7 @@ if(isset($input['id']) && isset($input['password'])){
 				$response["status"] = 0;
 				$response["message"] = "Login successful";
 				$response["full_name"] = $fullName;
+				$response["role"] = $role;
 			}
 			else{
 				$response["status"] = 1;
