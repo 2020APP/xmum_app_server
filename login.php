@@ -19,12 +19,12 @@ $input = json_decode($inputJSON, TRUE); //convert JSON into array
 if(isset($input['id']) && isset($input['password'])){
 	$iD = $input['id'];
 	$password = $input['password'];
-	$query    = "SELECT full_name, password_hash, salt FROM member WHERE id = ?";
+	$query    = "SELECT full_name, role, password_hash, salt FROM member WHERE id = ?";
 
 	if($stmt = $con->prepare($query)){
 		$stmt->bind_param("s",$iD);
 		$stmt->execute();
-		$stmt->bind_result($fullName,$passwordHashDB,$salt);
+		$stmt->bind_result($fullName,$role,$passwordHashDB,$salt);
 		if($stmt->fetch()){
 			//Validate the password
 			if(password_verify(concatPasswordWithSalt($password,$salt),$passwordHashDB)){
