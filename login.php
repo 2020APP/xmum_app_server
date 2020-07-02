@@ -5,6 +5,7 @@ $response = array();
 $con='';
 $fullName='';
 $role='';
+$email='';
 $passwordHashDB='';
 $salt='';
 
@@ -19,12 +20,12 @@ $input = json_decode($inputJSON, TRUE); //convert JSON into array
 if(isset($input['id']) && isset($input['password'])){
 	$iD = $input['id'];
 	$password = $input['password'];
-	$query    = "SELECT full_name, role, password_hash, salt FROM member WHERE id = ?";
+	$query    = "SELECT full_name, role, e_mail_addr, password_hash, salt FROM member WHERE id = ?";
 
 	if($stmt = $con->prepare($query)){
 		$stmt->bind_param("s",$iD);
 		$stmt->execute();
-		$stmt->bind_result($fullName,$role,$passwordHashDB,$salt);
+		$stmt->bind_result($fullName,$role,$email,$passwordHashDB,$salt);
 		if($stmt->fetch()){
 			//Validate the password
 			if(password_verify(concatPasswordWithSalt($password,$salt),$passwordHashDB)){
@@ -32,6 +33,7 @@ if(isset($input['id']) && isset($input['password'])){
 				$response["message"] = "Login successful";
 				$response["full_name"] = $fullName;
 				$response["role"] = $role;
+				$response["e_mail_addr"] = $email;
 			}
 			else{
 				$response["status"] = 1;
