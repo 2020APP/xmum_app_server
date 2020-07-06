@@ -25,6 +25,24 @@ function idExists($iD){
 	return false;
 }
 
+function CourseIDExists($CourseID){
+    $query = "SELECT course_id FROM courses WHERE course_id = ?";
+    global $con;
+    if($stmt = $con->prepare($query)){
+        $stmt->bind_param("s",$CourseID);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->fetch();
+        if($stmt->num_rows == 1){
+            $stmt->close();
+            return true;
+        }
+        $stmt->close();
+    }
+    
+    return false;
+}
+
 /**
 * Creates a unique Salt for hashing the password
 * 
