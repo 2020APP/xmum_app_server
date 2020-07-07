@@ -13,27 +13,27 @@ $input = json_decode($inputJSON, TRUE); //convert JSON into array
 
 
 //Check for Mandatory parameters
-if(isset($input['course_id']) && isset($input['course_name']) && isset($input['credit']) && isset($input['lecturer_id']) && isset($input['student_no'])){
+if(isset($input['student_id']) && isset($input['course_id']) && isset($input['gpa']) && isset($input['grade']) && isset($input['credit'])){
+    $StudentID = $input['student_id'];
     $CourseID = $input['course_id'];
-    $CourseName = $input['course_name'];
+    $GPA = $input['gpa'];
+    $Grade = $input['grade'];
     $Credit = $input['credit'];
-    $LecturerID = $input['lecturer_id'];
-    $StudentNo = $input['student_no'];
     
     //Check if course already exist
-    if(!CourseIDExists($CourseID)){
-
+    if(!StudentIDnCourseIDExists($StudentID, $CourseID)){
+        
         //Query to register new course
-        $insertQuery  = "INSERT INTO courses(course_id, course_name, credit, lecturer_id, student_no) VALUES (?,?,?,?,?)";
+        $insertQuery  = "INSERT INTO grades(student_id, course_id, gpa, grade, credit) VALUES (?,?,?,?,?)";
         if($stmt = $con->prepare($insertQuery)){
-            $stmt->bind_param("sssss", $CourseID, $CourseName, $Credit, $LecturerID, $StudentNo);
+            $stmt->bind_param("sssss", $StudentID, $CourseID, $GPA, $Grade, $Credit);
             $stmt->execute();
-            $response["message"] = "Course created";
+            $response["message"] = "Grade created";
             $stmt->close();
         }
     }
     else{
-        $response["message"] = "Course exists";
+        $response["message"] = "Grade exists";
     }
 }
 else{

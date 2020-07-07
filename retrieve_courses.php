@@ -1,6 +1,7 @@
 <?php
 $response = array();
-
+$course = array();
+$n = 0;
 //Declare empty variable
 $con='';
 $CourseID='';
@@ -8,30 +9,23 @@ $CourseName='';
 $Credit='';
 $FullName='';
 $StudentNo='';
-$CourseIDs=array();
-$CourseNames=array();
-$Credits=array();
-$FullNames=array();
-$StudentNos=array();
 
 include 'db_connect.php';
 include 'functions.php';
 
-$query = "SELECT courses.course_id, courses.course_name, courses.credit, member.full_name, courses.student_no FROM courses, member WHERE courses.lecturer_id=member.id";
+$query = "SELECT courses.course_id, courses.course_name, courses.credit, member.full_name, courses.student_no FROM courses LEFT JOIN member ON courses.lecturer_id=member.id";
 $stmt = $con->prepare($query);
 $stmt->execute();
 $stmt->bind_result($CourseID,$CourseName,$Credit,$FullName,$StudentNo);
 while ($stmt->fetch()) {
-    $CourseIDs[]=$CourseID;
-    $CourseNames[]=$CourseName;
-    $Credits[]=$Credit;
-    $FullNames[]=$FullName;
-    $StudentNos[]=$StudentNo;
+    $course["course_id"] = $CourseID;
+    $course["course_name"] = $CourseName;
+    $course["credit"] = $Credit;
+    $course["full_name"] = $FullName;
+    $course["student_no"] = $StudentNo;
+    $response[$n] = $course;
+    ++$n;
 }
-$response["course_id"] = $CourseIDs[];
-$response["course_name"] = $CourseNames[];
-$response["credit"] = $Credits[];
-$response["full_name"] = $FullNames[];
-$response["student_no"] = $StudentNos[];
-$stmt->close();
 echo json_encode($response);
+
+$stmt->close();

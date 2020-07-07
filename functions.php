@@ -43,6 +43,24 @@ function CourseIDExists($CourseID){
     return false;
 }
 
+function StudentIDnCourseIDExists($StudentID, $CourseID){
+    $query = "SELECT student_id, course_id FROM grades WHERE student_id = ?, course_id = ?";
+    global $con;
+    if($stmt = $con->prepare($query)){
+        $stmt->bind_param("ss",$StudentID,$CourseID);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->fetch();
+        if($stmt->num_rows == 1){
+            $stmt->close();
+            return true;
+        }
+        $stmt->close();
+    }
+    
+    return false;
+}
+
 /**
 * Creates a unique Salt for hashing the password
 * 
