@@ -3,11 +3,16 @@ $response = array();
 
 //Declare empty variable
 $con='';
-$CourseID=array();
-$CourseName=array();
-$Credit=array();
-$FullName=array();
-$StudentNo=array();
+$CourseID='';
+$CourseName='';
+$Credit='';
+$FullName='';
+$StudentNo='';
+$CourseIDs=array();
+$CourseNames=array();
+$Credits=array();
+$FullNames=array();
+$StudentNos=array();
 
 include 'db_connect.php';
 include 'functions.php';
@@ -16,12 +21,17 @@ $query = "SELECT courses.course_id, courses.course_name, courses.credit, member.
 $stmt = $con->prepare($query);
 $stmt->execute();
 $stmt->bind_result($CourseID,$CourseName,$Credit,$FullName,$StudentNo);
-$stmt->fetch();
-$response["course_id"] = $CourseID;
-$response["course_name"] = $CourseName;
-$response["credit"] = $Credit;
-$response["full_name"] = $FullName;
-$response["student_no"] = $StudentNo;
+while ($stmt->fetch()) {
+    $CourseIDs[]=$CourseID;
+    $CourseNames[]=$CourseName;
+    $Credits[]=$Credit;
+    $FullNames[]=$FullName;
+    $StudentNos[]=$StudentNo;
+}
+$response["course_id"] = $CourseIDs[];
+$response["course_name"] = $CourseNames[];
+$response["credit"] = $Credits[];
+$response["full_name"] = $FullNames[];
+$response["student_no"] = $StudentNos[];
 $stmt->close();
 echo json_encode($response);
-
