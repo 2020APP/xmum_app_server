@@ -43,11 +43,11 @@ function CourseIDExists($CourseID){
     return false;
 }
 
-function StudentIDnCourseIDExists($StudentID, $CourseID){
-    $query = "SELECT student_id, course_id FROM grades WHERE student_id = ?, course_id = ?";
+function EnrollmentExists($CourseID, $StudentID){
+    $query = "SELECT course_id, student_id FROM enrollment_history WHERE course_id = ? AND student_id = ?";
     global $con;
     if($stmt = $con->prepare($query)){
-        $stmt->bind_param("ss",$StudentID,$CourseID);
+        $stmt->bind_param("ss",$CourseID, $StudentID);
         $stmt->execute();
         $stmt->store_result();
         $stmt->fetch();
@@ -59,6 +59,10 @@ function StudentIDnCourseIDExists($StudentID, $CourseID){
     }
     
     return false;
+}
+
+function CheckTableExists($CourseID){
+    
 }
 
 /**

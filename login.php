@@ -44,7 +44,6 @@ if(isset($input['id']) && isset($input['password'])){
 			$response["status"] = 1;
 			$response["message"] = "Invalid id and password combination";
 		}
-		
 		$stmt->close();
 	}
 }

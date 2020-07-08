@@ -26,6 +26,5 @@ while ($stmt->fetch()) {
     $response[$n] = $course;
     ++$n;
 }
-echo json_encode($response);
-
 $stmt->close();
+echo json_encode($response);

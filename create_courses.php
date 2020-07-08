@@ -22,10 +22,9 @@ if(isset($input['course_id']) && isset($input['course_name']) && isset($input['c
     
     //Check if course already exist
     if(!CourseIDExists($CourseID)){
-
         //Query to register new course
-        $insertQuery  = "INSERT INTO courses(course_id, course_name, credit, lecturer_id, student_no) VALUES (?,?,?,?,?)";
-        if($stmt = $con->prepare($insertQuery)){
+        $QueryAddCourse = "INSERT INTO courses(course_id, course_name, credit, lecturer_id, student_no) VALUES (?,?,?,?,?)";
+        if($stmt = $con->prepare($QueryAddCourse)){
             $stmt->bind_param("sssss", $CourseID, $CourseName, $Credit, $LecturerID, $StudentNo);
             $stmt->execute();
             $response["message"] = "Course created";
